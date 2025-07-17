@@ -4,70 +4,54 @@ import com.fasterxml.jackson.databind.JsonNode;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class VirtualfakerApplicationTests {
-
 	@Autowired
 	DataController dataController;
-
 	@Test
-	void health(){
-		assertEquals("Health Check OK", dataController.healthCheck());
+	void health() {
+		assertEquals("HEALTH CHECK OK!", dataController.healthCheck());
 	}
-
 	@Test
-	void version(){
-		assertEquals("Version is 1.0.0", dataController.version());
+	void version() {
+		assertEquals("The actual version is 1.0.0", dataController.version());
 	}
-
-
 	@Test
-	void nationLength(){
-		Integer nationLength = dataController.getRandomNations().size();
-		assertEquals(10, nationLength);
+	void nationLength() {
+		Integer nationsLength = dataController.getRandomNations().size();
+		assertEquals(10, nationsLength);
 	}
-
 	@Test
-	void currenciesLength(){
+	void currenciesLength() {
 		Integer currenciesLength = dataController.getRandomCurrencies().size();
 		assertEquals(20, currenciesLength);
 	}
-
 	@Test
-	void testRandomCurrenciesCodeFormat(){
-		DataController dataController = new DataController();
-		JsonNode response = dataController.getRandomCurrencies();
-
-		for(int i = 0; i < response.size(); i++){
-
+	public void testRandomCurrenciesCodeFormat() {
+		DataController controller = new DataController();
+		JsonNode response = controller.getRandomCurrencies();
+		for (int i = 0; i < response.size(); i++) {
 			JsonNode currency = response.get(i);
 			String code = currency.get("code").asText();
-			assertTrue(code.matches("[A-Z]{3}"));
-
+			assertTrue(code.matches("[A-Z]{3}")); // Check for 3 uppercase letters format
 		}
 	}
-
 	@Test
-	void testRandomNationsPerformance(){
-		DataController	controller = new DataController();
+	public void testRandomNationsPerformance() {
+		DataController controller = new DataController();
 		long startTime = System.currentTimeMillis();
-
 		controller.getRandomNations();
 		long endTime = System.currentTimeMillis();
 		long executionTime = endTime - startTime;
-
 		System.out.println(executionTime);
-		assertTrue(executionTime < 5000);
+// Assert that execution time is within acceptable limits
+		assertTrue(executionTime < 2000); // 2 second threshold
 	}
-
 	@Test
-	void aviationLength(){
-		Integer aviationLength = dataController.getRandomAviation().size();
-		assertEquals(20, aviationLength);
+	void aviationsLength() {
+		Integer aviationsLength = dataController.getRandomnAviation().size();
+		assertEquals(20, aviationsLength);
 	}
 }
