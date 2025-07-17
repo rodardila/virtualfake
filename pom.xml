@@ -66,6 +66,8 @@
 			</plugin>
 
 		</plugins>
+
+		<finalName>virtualfake</finalName>
 	</build>
 
 </project>
